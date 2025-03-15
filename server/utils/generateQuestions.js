@@ -15,7 +15,7 @@ console.log("chatgpt key:> "+process.env.OPENAI_API_KEY);
 
 export async function generateQuestion() {
   try {
-    const prompt = `Generate a list of 500 random travel-related quiz questions. In clue don't mention Destination name. Each question should include:
+    const prompt = `Generate a list of 100 random travel-related quiz questions. In clue don't mention Destination name. Each question should include:
 1. The correct destination name.
 2. A short clue about the destination.
 3. Four multiple-choice options (one of which is correct).

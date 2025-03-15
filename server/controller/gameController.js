@@ -44,8 +44,10 @@ export const validateAnswer = async(req,res)=>{
 
     if(isCorrect){
       res.status(200).json({isCorrect});
+    }else{
+
+      res.status(400).json({ isCorrect });
     }
-    res.status(400).json({ isCorrect });
   } catch (error) {
     res.status(500).json({ error: "Error verifying answer" });
   }
