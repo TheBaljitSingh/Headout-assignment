@@ -3,7 +3,10 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
 const Challenge = () => {
-  const { username: challengerUsername } = useParams();
+  const location = useLocation();
+  const queryParmas = new URLSearchParams(location.search);
+  const referrer = queryParmas.get('ref');
+
   const navigate = useNavigate();
   const [challengerScore, setChallengerScore] = useState(null);
   const [playerName, setPlayerName] = useState('');
@@ -12,16 +15,17 @@ const Challenge = () => {
     // TODO: Replace with actual API call
     const fetchChallengerScore = async () => {
       try {
-        const response = await fetch(`/api/users/${challengerUsername}/score`);
-        const data = await response.json();
-        setChallengerScore(data.score);
+        // const response = await fetch(`/api/users/${referrer}/score`);
+        
+        // const data = await response.json();
+        setChallengerScore(20);
       } catch (error) {
         console.error('Error fetching challenger score:', error);
       }
     };
 
     fetchChallengerScore();
-  }, [challengerUsername]);
+  }, [referrer]);
 
   const handleStart = (e) => {
     e.preventDefault();
@@ -54,10 +58,10 @@ const Challenge = () => {
             className="bg-white/10 rounded-lg p-4 mb-8 text-white"
           >
             <p className="text-xl mb-2">
-              {challengerUsername}'s Score
+              {referrer}'s Score
             </p>
             <p className="text-3xl font-bold">
-              {challengerScore.correct}/{challengerScore.total}
+              {referrer.correct}/{challengerScore.total}
             </p>
           </motion.div>
         )}

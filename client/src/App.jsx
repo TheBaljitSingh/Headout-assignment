@@ -12,7 +12,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/game" element={<Game />} />
-          <Route path="/challenge/:username" element={<Challenge />} />
+          <Route path="/challenge" element={<Challenge />} />
         </Routes>
       </AnimatePresence>
     </Router>

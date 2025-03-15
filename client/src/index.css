@@ -2,60 +2,190 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  body {
-    @apply min-h-screen bg-primary text-white flex items-center justify-center;
+:root {
+  --primary: #3498db;
+  --primary-dark: #2980b9;
+  --primary-gradient: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+  --white-05: rgba(255, 255, 255, 0.05);
+  --white-10: rgba(255, 255, 255, 0.1);
+  --white-20: rgba(255, 255, 255, 0.2);
+  --white-30: rgba(255, 255, 255, 0.3);
+  --white-50: rgba(255, 255, 255, 0.5);
+  --white-70: rgba(255, 255, 255, 0.7);
+  --white-90: rgba(255, 255, 255, 0.9);
+  --card-shadow: 
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --card-shadow-hover: 
+    0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+body {
+  min-height: 100vh;
+  background: var(--primary-gradient);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  margin: 0;
+  padding: 1rem;
+}
+
+.container {
+  text-align: center;
+  width: 100%;
+  max-width: 480px;
+  animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: white;
+}
+
+.title span[role="img"] {
+  font-size: 2.25rem;
+  animation: float 6s ease-in-out infinite;
+  display: inline-block;
+  margin-top: -4px;
+}
+
+.subtitle {
+  font-size: 1.125rem;
+  margin-bottom: 2rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--white-90);
+  letter-spacing: -0.01em;
+}
+
+.card {
+  background: var(--white-05);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 20px;
+  box-shadow: var(--card-shadow);
+  padding: 2rem;
+  border: 1px solid var(--white-10);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--card-shadow-hover);
+  border-color: var(--white-20);
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+input {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  background-color: var(--white-10);
+  color: white;
+  border: 1px solid var(--white-20);
+  border-radius: 12px;
+  outline: none;
+  transition: all 0.2s ease;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+input:hover {
+  border-color: var(--white-30);
+  background-color: var(--white-10);
+}
+
+input:focus {
+  border-color: white;
+  background-color: var(--white-10);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+}
+
+input::placeholder {
+  color: var(--white-50);
+}
+
+.btn {
+  width: 100%;
+  padding: 0.875rem 1.5rem;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+  border: none;
+  background-color: white;
+  color: var(--primary);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary {
+  background-color: white;
+  color: var(--primary);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-secondary {
+  background-color: var(--white-20);
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: var(--white-30);
+  transform: translateY(-2px);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-@layer components {
-  .container {
-    @apply text-center w-full max-w-[600px] p-8;
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
   }
-
-  .title {
-    @apply text-4xl font-bold mb-2 flex items-center justify-center gap-2;
-  }
-
-  .subtitle {
-    @apply text-xl mb-8 opacity-90;
-  }
-
-  .form-container {
-    @apply flex flex-col gap-4;
-  }
-
-  .card {
-    @apply bg-white-alpha-10 backdrop-blur-lg rounded-xl shadow-lg p-6 border border-white-alpha-20;
-  }
-
-  .btn {
-    @apply w-full py-4 px-4 rounded-lg font-semibold text-base transition-all duration-200 cursor-pointer border-none;
-  }
-
-  .btn-primary {
-    @apply bg-white text-primary hover:bg-white-alpha-90 hover:-translate-y-0.5;
-  }
-
-  .btn-secondary {
-    @apply bg-white-alpha-20 text-white hover:bg-white-alpha-30 hover:-translate-y-0.5;
+  50% {
+    transform: translateY(-6px);
   }
 }
 
-@layer utilities {
-  .glass {
-    @apply bg-white-alpha-10 backdrop-blur-md border border-white-alpha-20;
-  }
-
-  input {
-    @apply w-full py-3 px-4 bg-white-alpha-20 text-white border-2 border-white-alpha-30 rounded-lg outline-none transition-all duration-200 text-base;
-  }
-
-  input:focus {
-    @apply border-white-alpha-50 shadow-[0_0_0_2px_rgba(255,255,255,0.2)];
-  }
-
-  input::placeholder {
-    @apply text-white-alpha-70;
-  }
+/* Glass effect */
+.glass {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--white-20);
+  box-shadow: 
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
