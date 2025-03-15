@@ -6,7 +6,7 @@ import { getRandomQuestion, validateAnswer, getQuestionsByInterest } from "../co
 
 const router = express.Router();
 
-router.route("/").post(getRandomQuestion);
+router.route("/random").get(getRandomQuestion);
 router.route("/answer").post(validateAnswer);
 router.route("/fetch-questions").post(getQuestionsByInterest);
 

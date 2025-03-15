@@ -38,9 +38,9 @@ app.get("/Admin/generateQuestion", async (req, res)=>{
 
 
  try {
-   const generatedQuestion = await seedDatabase();
+   const generatedDestinations = await seedDatabase();
  
-   res.status(200).json({data: generateQuestion});
+   res.status(200).json({generatedDestinations});
  } catch (error) {
   res.status(500).json({ error: "Failed to generate questions" });
 
