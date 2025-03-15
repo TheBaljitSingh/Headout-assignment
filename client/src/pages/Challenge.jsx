@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import axios from "axios"
 
 const Challenge = () => {
   const location = useLocation();
@@ -9,16 +10,21 @@ const Challenge = () => {
 
   const navigate = useNavigate();
   const [challengerScore, setChallengerScore] = useState(null);
+  const [challengerAttempts, setChallengerAttempts] = useState(null);
+
   const [playerName, setPlayerName] = useState('');
 
+  console.log(referrer);
+
   useEffect(() => {
-    // TODO: Replace with actual API call
     const fetchChallengerScore = async () => {
       try {
-        // const response = await fetch(`/api/users/${referrer}/score`);
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/v1/user/getUserDetails/?username=${referrer}`);
         
-        // const data = await response.json();
-        setChallengerScore(20);
+        // console.log(response.data?.user?.score);
+        setChallengerScore(response?.data?.user?.score);
+        setChallengerAttempts(response?.data?.user?.attempts);
+
       } catch (error) {
         console.error('Error fetching challenger score:', error);
       }
@@ -61,7 +67,7 @@ const Challenge = () => {
               {referrer}'s Score
             </p>
             <p className="text-3xl font-bold">
-              {referrer.correct}/{challengerScore.total}
+            Scored {challengerScore} in {challengerAttempts} Attempts
             </p>
           </motion.div>
         )}

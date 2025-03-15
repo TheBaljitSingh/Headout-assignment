@@ -79,8 +79,11 @@ const Game = () => {
 
   const handleAnswer = async (destinationId, selectedOption) => {
 
+    setAttempts(prev => prev+1);
 
-      const isCorrect = await axios.post(`${import.meta.env.VITE_API_URL}/api/v1/game/answer`, {destinationId, selectedOption});
+
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/v1/game/answer`, {destinationId, selectedOption});
+      const isCorrect = response.data.isCorrect;
 
 
     // const isCorrect = selectedOption === currentDestination.name;
@@ -104,18 +107,34 @@ const Game = () => {
     }
   };
 
-  const handleShare = () => {
-    const shareData = {
-      title: 'Globetrotter Challenge',
-      text: `Hey! I scored ${score} out of ${attempts} in Globetrotter Challenge. Can you beat my score?`,
-      url: `${window.location.origin}/challenge/?ref=${username}`
-    };
-    
-    if (navigator.share) {
-      navigator.share(shareData);
-    } else {
-      // Fallback for browsers that don't support Web Share API
-      window.open(`https://wa.me/?text=${encodeURIComponent(shareData.text + ' ' + shareData.url)}`);
+  const handleShare = async (username, score, attempts) => {
+    try {
+      // Step 1: Check if the user is already registered
+      // const checkResponse = await axios.get(`${import.meta.env.VITE_API_URL}/api/v1/user/check/${username}`);
+      
+      // Step 2: Register the user if not already registered
+      const registeredUser = await axios.post(`${import.meta.env.VITE_API_URL}/api/v1/user/register`, { username, score, attempts });
+      
+        
+          // Step 3: Generate the shareable link
+          const shareUrl = `${window.location.origin}/challenge/?ref=${username}`;
+          const shareText = `Hey! I scored ${score} out of ${attempts} in Globetrotter Challenge. Can you beat my score?`;
+          
+          const shareData = {
+            title: 'Globetrotter Challenge',
+            text: shareText,
+            url: shareUrl
+          };
+          
+          // Step 4: Share using Web Share API if available, else use WhatsApp fallback
+          if (navigator.share) {
+            await navigator.share(shareData);
+          } else {
+            window.open(`https://wa.me/?text=${encodeURIComponent(shareText + ' ' + shareUrl)}`);
+          }
+          
+    } catch (error) {
+      console.error('Error sharing:', error.response?.data || error.message);
     }
   };
 
@@ -138,7 +157,7 @@ const Game = () => {
           </div>
           
           <div className='glass'>
-          <span className='text-white/70 flex'>for Correct +2, for Incorrect -1</span>
+          <span className='text-white/70 flex'>for Correct answer +2 and for Incorrect -1</span>
 
           </div>
           
@@ -162,7 +181,7 @@ const Game = () => {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 className="btn btn-secondary  "
-                onClick={() => handleAnswer(currentDestination._id, option )}
+                onClick={() => handleAnswer(currentDestination._id,  option)}
                 disabled={isCorrectAnswered}
               >
                 {option}
@@ -172,7 +191,8 @@ const Game = () => {
         </motion.div>
 
         <AnimatePresence mode="wait">
-          {feedback && (
+          {feedback?.message && (
+            
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -199,7 +219,7 @@ const Game = () => {
 
         <div className="flex justify-between mt-8">
           <button
-            onClick={handleShare}
+            onClick={()=>handleShare(username, score,attempts)}
             className="btn btn-secondary"
           >
             Challenge Friends 🤝
