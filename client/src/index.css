@@ -1,0 +1,61 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply min-h-screen bg-primary text-white flex items-center justify-center;
+  }
+}
+
+@layer components {
+  .container {
+    @apply text-center w-full max-w-[600px] p-8;
+  }
+
+  .title {
+    @apply text-4xl font-bold mb-2 flex items-center justify-center gap-2;
+  }
+
+  .subtitle {
+    @apply text-xl mb-8 opacity-90;
+  }
+
+  .form-container {
+    @apply flex flex-col gap-4;
+  }
+
+  .card {
+    @apply bg-white-alpha-10 backdrop-blur-lg rounded-xl shadow-lg p-6 border border-white-alpha-20;
+  }
+
+  .btn {
+    @apply w-full py-4 px-4 rounded-lg font-semibold text-base transition-all duration-200 cursor-pointer border-none;
+  }
+
+  .btn-primary {
+    @apply bg-white text-primary hover:bg-white-alpha-90 hover:-translate-y-0.5;
+  }
+
+  .btn-secondary {
+    @apply bg-white-alpha-20 text-white hover:bg-white-alpha-30 hover:-translate-y-0.5;
+  }
+}
+
+@layer utilities {
+  .glass {
+    @apply bg-white-alpha-10 backdrop-blur-md border border-white-alpha-20;
+  }
+
+  input {
+    @apply w-full py-3 px-4 bg-white-alpha-20 text-white border-2 border-white-alpha-30 rounded-lg outline-none transition-all duration-200 text-base;
+  }
+
+  input:focus {
+    @apply border-white-alpha-50 shadow-[0_0_0_2px_rgba(255,255,255,0.2)];
+  }
+
+  input::placeholder {
+    @apply text-white-alpha-70;
+  }
+}

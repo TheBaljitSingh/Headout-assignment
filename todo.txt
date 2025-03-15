@@ -1,0 +1,16 @@
+Backend ------------------------------------
+1) you have to generate the question with the any api or gpt models - done
+2) you have to test it wil the generate-question route for first time user also with the user answer which is selected
+3) then work on the referral program and username will be saved in the database, then create ?ref=${name}
+
++++++++++++++
+you have to change the destinations
+
+default is all over the world and if user want this to specific country then you can choose specific country
+
+Frontend -------------------------
+
+
+Testing --------------------------
+
+add some test cases of Jest do it fast
