@@ -29,8 +29,10 @@ Headout-Assignment/
 │   ├── src/             # Source files
 │   │   ├── components/  # Reusable components
 │   │   ├── pages/       # Page components
-│   │   │   ├── Game.jsx
+│   │   │   ├── Challenge.jsx
+│   │   │   ├── Home.jsx
 │   │   │   ├── Leaderboard.jsx
+│   │   │   ├── Game.jsx
 │   │   ├── App.jsx      # Main App component
 │   │   ├── index.jsx    # Entry point
 │   ├── package.json     # Client dependencies and scripts
@@ -39,18 +41,47 @@ Headout-Assignment/
 ├── server/              # Backend (Node.js with Express)
 │   ├── controller/      # Controllers
 │   │   ├── gameController.js
+|   |   ├── userController.js
+│   ├── db/          # Database connections
+│   │   ├── conn.js
 │   ├── models/          # Database models
 │   │   ├── Destination.js
 │   │   ├── User.js
 │   ├── routes/          # API routes
 │   │   ├── gameRoutes.js
-│   ├── test/            # Unit Tests
-│   │   ├── userController.test.js
+│   │   ├── userRoutes.js
+│   ├── script/            # Add Data to Database using Gimin API
+│   │   ├── seedDatabase.js
+│   ├── utils/            # prompt is added here for the generate the custom Destinations for Game
+│   │   ├── generateQuestions.js
 │   ├── app.js           # Express app setup
 │   ├── server.js        # Server entry point
 │   ├── package.json     # Server dependencies and scripts
 │
 ```
+
+
+---
+# Gimini Admin Prompt:
+
+--- Admin Route: api/v1/user/leaderboard 
+
+  const prompt = `Generate a list of 100 random travel-related quiz questions. In clue don't mention Destination name. Each question should include:
+1. The correct destination name.
+2. A short clue about the destination.
+3. Four multiple-choice options (one of which is correct).
+4. A fun fact about the destination.
+
+Format the response as JSON:
+[
+  {
+    "name": "Destination Name",
+    "clue": "A short clue about the place.",
+    "options": ["Option1", "Option2", "Option3", "Option4"],
+    "funFact": "An interesting fact about the destination."
+  }
+]`;
+
 
 ---
 
@@ -147,5 +178,12 @@ Want to improve this project? Follow these steps:
 3. Commit your changes (`git commit -m "Add new feature"`)  
 4. Push to your branch (`git push origin feature-name`)  
 5. Submit a **Pull Request** 🎉  
+
+## 🛠 Future Scope
+1. Token System with Authentication:
+The application could be enhanced by adding a token-based authentication system. JWT (JSON Web Tokens) can be used for secure user login and registration, ensuring that only authenticated users can access certain features, such as score tracking or playing against friends.
+
+2. Live Leaderboard Tracking:
+A live leaderboard system can be integrated where user scores are tracked in real time. This would encourage competitive play and allow users to see their progress compared to other players in real-time.
 
 ---
