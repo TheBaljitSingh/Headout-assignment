@@ -12,7 +12,6 @@ const Home = () => {
       navigate('/game', { state: { username } });
     }
   };
-
   return (
     <div className="container mx-auto px-4">
       <motion.div
