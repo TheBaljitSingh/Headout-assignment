@@ -60,6 +60,10 @@ Headout-Assignment/
 │
 ```
 
+# Postman Api Endpoints
+
+https://wellfound-assignment-backend.postman.co/workspace/TEST~71255ef1-73bf-4f70-9046-157483ee973e/collection/25582402-14662f88-baca-4d00-8f5b-44f60a2ac546?action=share&creator=25582402
+
 
 ---
 # Gimini Admin Prompt:
