@@ -65,6 +65,11 @@ Headout-Assignment/
 # Gimini Admin Prompt:
 
 --- Admin Route: api/v1/user/leaderboard 
+Directory structure: 
+- server/script: contains an script file to seed the database
+- server/utils: contain custom prompt for Gimini API
+
+for example:
 
   const prompt = `Generate a list of 100 random travel-related quiz questions. In clue don't mention Destination name. Each question should include:
 1. The correct destination name.
