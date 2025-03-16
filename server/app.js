@@ -51,6 +51,10 @@ app.get("/Admin/generateQuestion", async (req, res)=>{
 })
 
 
+app.get("/server-status", (req, res)=>{
+  res.json({status: "ready"});
+})
+
 
 app.get("/", function (req, res) {
   res.send("Services are up and running");
