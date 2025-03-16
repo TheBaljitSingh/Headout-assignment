@@ -47,10 +47,31 @@ export const getLeaderboard  = async(req, res)=>{
 
 export const saveScore = async(req, res)=>{
   try {
+    
     const { username, score, attempts } = req.body;
-    const newScore = new User({ username, score, attempts });
-    await newScore.save();
-    res.json({ message: "Score saved successfully!" });
+    const alreadyUser = User.findOne({username});
+   
+    
+    if(alreadyUser){
+      
+      // run query to update the user score and attempts
+      await User.updateOne(
+        { username },
+        { $set: { score, attempts } }
+      );
+
+      res.status(200).json({message: "Score saved successfully"});
+      
+    }else{
+      // create user with updated score and attempts;
+      
+      const newScore = new User({ username, score, attempts });
+      await newScore.save();
+      
+      res.status(200).json({message: "Score saved successfully"});
+    }
+    
+    
   } catch (err) {
     res.status(500).json({ error: "Internal Server Error" });
   }

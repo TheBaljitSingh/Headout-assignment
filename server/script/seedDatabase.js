@@ -23,6 +23,7 @@ async function seedDatabase() {
 
     if (filteredData.length > 0) {
       await Destination.insertMany(filteredData);
+      console.log(filteredData);
 
     } else {
       console.log("No valid questions to insert.");

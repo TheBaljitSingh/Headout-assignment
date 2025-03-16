@@ -8,6 +8,7 @@ const router = express.Router();
 
 router.route("/random").get(getRandomQuestion);
 router.route("/answer").post(validateAnswer);
+router.route("/")
 router.route("/fetch-questions").post(getQuestionsByInterest);
 
 

@@ -30,7 +30,7 @@ export const getRandomQuestion = async (req, res)=>{
 export const validateAnswer = async(req,res)=>{
 
   try {
-    const { destinationId, selectedOption } = req.body; // Get user answer from frontend
+    const { destinationId, selectedOption, username } = req.body; // Get user answer from frontend
 
     const destination = await Destination.findById(destinationId); // Get correct answer
 
@@ -42,8 +42,25 @@ export const validateAnswer = async(req,res)=>{
 
     const isCorrect = destination.name.toLowerCase() === selectedOption.toLowerCase(); // Compare answer
 
+    // check user is there or not if not then create user with this username and save their details
+   
+    // export const saveScore = async(req, res)=>{
+    //   try {
+    //     const { username, score, attempts } = req.body;
+    //     const newScore = new User({ username, score, attempts });
+    //     await newScore.save();
+    //     res.json({ message: "Score saved successfully!" });
+    //   } catch (err) {
+    //     res.status(500).json({ error: "Internal Server Error" });
+    //   }
+    // }
+    
+
     if(isCorrect){
+
+
       res.status(200).json({isCorrect});
+
     }else{
 
       res.status(400).json({ isCorrect });

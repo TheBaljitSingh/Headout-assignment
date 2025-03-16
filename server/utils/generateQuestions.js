@@ -15,16 +15,18 @@ console.log("chatgpt key:> "+process.env.OPENAI_API_KEY);
 
 export async function generateQuestion() {
   try {
-    const prompt = `Generate a list of 100 random travel-related quiz questions. In clue don't mention Destination name. Each question should include:
+    const prompt = `Generate a list of 5 random travel-related quiz questions. In clue don't mention Destination name. Each question should include:
 1. The correct destination name.
-2. A short clue about the destination.
-3. Four multiple-choice options (one of which is correct).
-4. A fun fact about the destination.
+2. A short Question related to destination
+3. A short clue about the destination.
+4. Four multiple-choice options (one of which is correct).
+5. A fun fact about the destination.
 
-Format the response as JSON:
+Format the response as JSON only:
 [
   {
     "name": "Destination Name",
+    "question" : "A short Question related to destination for the quiz" 
     "clue": "A short clue about the place.",
     "options": ["Option1", "Option2", "Option3", "Option4"],
     "funFact": "An interesting fact about the destination."
@@ -36,6 +38,7 @@ Format the response as JSON:
 
     try {
       let responseText = response.text(); // Get the response text
+
     
       // Remove markdown code block if present
       if (responseText.startsWith("```json")) {
