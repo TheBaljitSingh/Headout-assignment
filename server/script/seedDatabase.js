@@ -13,17 +13,28 @@ async function seedDatabase() {
     
     const data = await generateQuestion();
 
-    if (!data) {
+
+    const filteredData = data.filter(d =>{
+      return d.name && d.question && d.clue && d.options && d.funFact;
+
+    })
+
+    console.log(filteredData);
+
+    console.log("printing the data:  ", filteredData)
+
+    if (!filteredData) {
       console.error("no valid data");
       return;
     }
 
+    
    
-    const filteredData = data.filter((d) => d != null); // Corrected NULL to null
 
     if (filteredData.length > 0) {
-      await Destination.insertMany(filteredData);
-      console.log(filteredData);
+      await Destination.insertMany(data);
+
+      console.log("Inserted successfully");
 
     } else {
       console.log("No valid questions to insert.");
@@ -31,9 +42,8 @@ async function seedDatabase() {
 
     mongoose.disconnect();
 
-    return filteredData;
 
-    return filteredData;
+    return data;
   } catch (error) {
     console.error("Error seeding database:", error);
     mongoose.disconnect();

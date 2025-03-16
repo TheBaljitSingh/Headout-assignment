@@ -7,12 +7,12 @@ Globetrotter is a full-stack web application where users receive cryptic clues a
 - **Random Clues**: Presents 1–2 random hints about a destination.  
 - **Multiple Choice**: Users select from multiple possible answers.  
 - **Instant Feedback**:  
-  - 🎉 **Correct Answer**: Confetti animation + fun fact reveal.  
-  - 😢 **Incorrect Answer**: Sad-face animation + fun fact.  
+  - 🎉 **Correct Answer**: Confetti animation +2 fun fact reveal.  
+  - 😢 **Incorrect Answer**: Sad-face animation +1 fun fact.  
 - **Score Tracking**: Displays total user score, tracking score with No of attempts.  
 - **Challenge a Friend**:  
   - Users enter a **unique username** to create a profile.  
-  - Clicking ‘Challenge a Friend’ generates an **invite link** with a dynamic image.  
+  - Clicking ‘Challenge a Friend’ generates an **invite link** with a dynamic link.  
   - Friends can view the inviter’s score before playing.  
   - Anyone with the invitation link can play!  
 
@@ -92,6 +92,11 @@ Format the response as JSON:
 ]`;
 
 
+
+---
+# Video Demo: 
+
+https://drive.google.com/file/d/1YK-5xUYGmT87mS6To5-WLl6tWzi-EgQB/view?usp=drivesdk
 ---
 
 ## ⚙️ Installation & Setup  

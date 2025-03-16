@@ -69,7 +69,7 @@ const Game = () => {
       setCurrentDestination(newDestination);
       setOptions(newDestination.options);
       setCurrentClue(newDestination.clue);
-      setFeedback(null);
+      setFeedback(newDestination.funFact);
       setIsCorrectAnswered(false); // ✅ Reset for next question
 
   
@@ -186,7 +186,7 @@ const Game = () => {
             <span className="ml-2 text-white font-semibold">{score} with {attempts} attempts</span>
           </div>
           <h2 className="heading-secondary">🤔 Guess the Destination</h2>
-          <p className="text-lg mb-6 text-white/90">{currentDestination.clue}</p>
+          <p className="text-lg mb-6 text-white/90">{currentDestination.question}</p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 ">
             {options.map((option) => (
@@ -204,7 +204,7 @@ const Game = () => {
           </div>
         </motion.div>
 
-        <AnimatePresence mode="wait">
+        {/* <AnimatePresence mode="wait">
           {feedback?.message && (
             
             <motion.div
@@ -220,16 +220,53 @@ const Game = () => {
               <p className="text-lg text-white">{feedback.message}</p>
             </motion.div>
           )}
-        </AnimatePresence>
+        </AnimatePresence> */}
 
 
-        <div className="mt-6">
+      
+
+<AnimatePresence mode="wait">
+  {feedback?.message && (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      className={`card mb-8`}
+    >
+      {feedback.type === 'success' ? (
+        <>
+          <div className="flex items-center gap-2 mb-2 ">
+            <span className="text-2xl">🎉</span>
+            <h3 className="text-xl font-bold text-green-400">Correct Answer!</h3>
+          </div>
+          <div className="mt-4 p-4">
+            <p className="text-lg text-white/90 mb-2">Did you know?</p>
+            <p className="text-white/80">{currentDestination.funFact}</p>
+          </div>
+        </>
+      ) : (
+        <>
+          <div className="flex items-center gap-2 mb-2">
+            <span className="text-2xl">😢</span>
+            <h3 className="text-xl font-bold text-red-400">Not quite!</h3>
+          </div>
+          <p className="text-white/80">Try again! Use the clue if you need help.</p>
+        </>
+      )}
+    </motion.div>
+  )}
+</AnimatePresence>
+
+<div className="mt-6">
             <button
               onClick={() => setShowClue(!showClue)}
               className="btn btn-secondary mb-4"
             >
               {showClue ? '🎯 Hide Clue' : '💡 Show Clue'}
             </button>
+            {
+
+            }
 
             {/* Clue Display */}
             {showClue && (
