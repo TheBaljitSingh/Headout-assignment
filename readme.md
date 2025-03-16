@@ -9,8 +9,7 @@ Globetrotter is a full-stack web application where users receive cryptic clues a
 - **Instant Feedback**:  
   - 🎉 **Correct Answer**: Confetti animation + fun fact reveal.  
   - 😢 **Incorrect Answer**: Sad-face animation + fun fact.  
-- **Play Again**: Option to load a new destination.  
-- **Score Tracking**: Displays total user score, tracking correct/incorrect answers.  
+- **Score Tracking**: Displays total user score, tracking score with No of attempts.  
 - **Challenge a Friend**:  
   - Users enter a **unique username** to create a profile.  
   - Clicking ‘Challenge a Friend’ generates an **invite link** with a dynamic image.  
