@@ -25,7 +25,7 @@ const Game = () => {
   //   {
   //     name: 'Statue of Liberty',
   //     clue: 'A symbol of freedom gifted by France to the USA.',
-  //     funFact: 'The statue’s full name is "Liberty Enlightening the World".',
+  //     funFact: 'The statue's full name is "Liberty Enlightening the World".',
   //     options: ['Statue of Liberty', 'Christ the Redeemer', 'Eiffel Tower', 'Mount Rushmore']
   //   }
   // ];
@@ -41,6 +41,10 @@ const Game = () => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [isCorrectAnswered, setIsCorrectAnswered] = useState(false); // Track correct answer
+  const [showClue, setShowClue] = useState(false);
+
+
+  const [currentClue, setCurrentClue] = useState('');
 
 
   
@@ -64,6 +68,7 @@ const Game = () => {
       
       setCurrentDestination(newDestination);
       setOptions(newDestination.options);
+      setCurrentClue(newDestination.clue);
       setFeedback(null);
       setIsCorrectAnswered(false); // ✅ Reset for next question
 
@@ -138,6 +143,15 @@ const Game = () => {
     }
   };
 
+  const handleViewLeaderboard = () => {
+    navigate('/leaderboard', { 
+      state: { 
+        from: 'game',
+        // You can also pass any game state you want to preserve
+      } 
+    });
+  };
+
   if (!currentDestination) return null;
 
   return (
@@ -208,6 +222,30 @@ const Game = () => {
           )}
         </AnimatePresence>
 
+
+        <div className="mt-6">
+            <button
+              onClick={() => setShowClue(!showClue)}
+              className="btn btn-secondary mb-4"
+            >
+              {showClue ? '🎯 Hide Clue' : '💡 Show Clue'}
+            </button>
+
+            {/* Clue Display */}
+            {showClue && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className="bg-white/5 backdrop-blur-sm rounded-lg p-4 border border-white/10"
+              >
+                <p className="text-white/90 text-sm">
+                  <span className="font-semibold text-white">Clue:</span> {currentClue}
+                </p>
+              </motion.div>
+            )}
+          </div>
+
         <motion.button
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
@@ -223,6 +261,14 @@ const Game = () => {
             className="btn btn-secondary"
           >
             Challenge Friends 🤝
+          </button>
+        </div>
+        <div className="flex justify-between mt-8">
+          <button
+            onClick={handleViewLeaderboard}
+            className="btn btn-secondary"
+          >
+            Leaderboard 🥇
           </button>
         </div>
       </div>

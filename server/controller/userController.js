@@ -32,6 +32,7 @@ export const registerUser = async (req, res) => {
 
 export const getLeaderboard  = async(req, res)=>{
     try {
+      // soring on the basis of higher score and have low attempts, becaue it +2 on correct and -1 on wrong
         const leaderboard = await User.find()
         .sort({ score: -1, attempts: 1 })
         .limit(10);
@@ -76,4 +77,5 @@ export const getUserDetails = async (req, res) => {
       res.status(500).json({ error: "Error fetching user details" });
   }
 };
+
 
