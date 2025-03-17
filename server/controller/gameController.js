@@ -27,49 +27,33 @@ export const getRandomQuestion = async (req, res)=>{
 
 
 
-export const validateAnswer = async(req,res)=>{
-
+export const validateAnswer = async (req, res) => {
   try {
-    const { destinationId, selectedOption, username } = req.body; // Get user answer from frontend
+    const { destinationId, selectedOption } = req.body;
 
-    const destination = await Destination.findById(destinationId); // Get correct answer
+    // Fetch the destination based on the ID
+    const destination = await Destination.findById(destinationId);
 
+    // Check if the destination was found
     if (!destination) {
       return res.status(404).json({ error: "Destination not found" });
     }
 
-    console.log(destinationId,selectedOption)
+    // Normalize both values to lowercase and compare
+    const isCorrect = destination.name.trim().toLowerCase() === selectedOption.trim().toLowerCase();
 
-    const isCorrect = destination.name.toLowerCase() === selectedOption.toLowerCase(); // Compare answer
+    // Optionally handle user creation here if you want to associate scores with users
+    // Example: if user doesn't exist, create user and save their score
 
-    // check user is there or not if not then create user with this username and save their details
-   
-    // export const saveScore = async(req, res)=>{
-    //   try {
-    //     const { username, score, attempts } = req.body;
-    //     const newScore = new User({ username, score, attempts });
-    //     await newScore.save();
-    //     res.json({ message: "Score saved successfully!" });
-    //   } catch (err) {
-    //     res.status(500).json({ error: "Internal Server Error" });
-    //   }
-    // }
-    
+    // Return the result (whether the answer was correct or not)
+    return res.status(200).json({ isCorrect });
 
-    if(isCorrect){
-
-
-      res.status(200).json({isCorrect});
-
-    }else{
-
-      res.status(400).json({ isCorrect });
-    }
   } catch (error) {
-    res.status(500).json({ error: "Error verifying answer" });
+    console.error("Error verifying answer:", error); // Log for debugging
+    res.status(500).json({ error: "Internal Server Error" });
   }
+};
 
-}
 
 export const getQuestionsByInterest = async (req, res)=>{
   try {

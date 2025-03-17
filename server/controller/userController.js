@@ -49,16 +49,17 @@ export const saveScore = async(req, res)=>{
   try {
     
     const { username, score, attempts } = req.body;
-    const alreadyUser = User.findOne({username});
-   
+    const alreadyUser = await User.findOne({username});
+
     
-    if(alreadyUser){
+    if(alreadyUser){  
       
       // run query to update the user score and attempts
       await User.updateOne(
         { username },
         { $set: { score, attempts } }
       );
+
 
       res.status(200).json({message: "Score saved successfully"});
       
@@ -67,8 +68,9 @@ export const saveScore = async(req, res)=>{
       
       const newScore = new User({ username, score, attempts });
       await newScore.save();
+
       
-      res.status(200).json({message: "Score saved successfully"});
+      res.status(201).json({message: "Score saved successfully"});
     }
     
     
