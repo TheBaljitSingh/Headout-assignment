@@ -4,10 +4,13 @@ import { motion } from 'framer-motion';
 import axios from 'axios';
 
 const Leaderboard = () => {
-  const navigate = useNavigate();
   const location = useLocation();
+  const navigate = useNavigate();
   const [leaderboardData, setLeaderboardData] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  // Get the values from location state
+  const { username, score, attempts } = location.state || {};
 
   useEffect(() => {
     const fetchLeaderboard = async () => {
@@ -25,20 +28,18 @@ const Leaderboard = () => {
   }, []);
 
   const handleBackToGame = () => {
-    // If we have previous game state, use it when navigating back
-    if (location.state?.from === 'game') {
-      navigate(-1); // This will go back to the previous page
-    } else {
-      // If no previous state, navigate to game with any saved user data
-      navigate('/game', { 
-        state: { 
-          username: localStorage.getItem('username'),
-          // Add any other game state you need to preserve
-        } 
-      });
-    }
+    navigate('/game', {
+      state: {
+        from: 'leaderboard',
+        username: username,
+        score: score,
+        attempts: attempts
+      },
+      replace: true
+    });
   };
-
+  
+  
   return (
     <div className="container mx-auto px-4 py-8">
       <motion.div

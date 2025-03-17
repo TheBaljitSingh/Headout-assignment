@@ -38,6 +38,7 @@ const Challenge = () => {
     if (playerName.trim()) {
       navigate('/game', { state: { username: playerName } });
     }
+    
   };
 
   return (

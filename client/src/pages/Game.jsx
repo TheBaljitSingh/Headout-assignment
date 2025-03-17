@@ -8,34 +8,36 @@ const Game = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const username = location.state?.username;
-
+  
+  
   // const dummyDestinations = [
-  //   {
-  //     name: 'Eiffel Tower',
-  //     clue: 'This famous landmark is known as the "Iron Lady" of France.',
-  //     funFact: 'The Eiffel Tower can be 15 cm taller in the summer due to heat expansion!',
-  //     options: ['Eiffel Tower', 'Statue of Liberty', 'Big Ben', 'Sydney Opera House']
-  //   },
-  //   {
-  //     name: 'Great Wall of China',
-  //     clue: 'This structure is visible from space and stretches over 13,000 miles!',
-  //     funFact: 'Contrary to popular belief, it is not fully visible from space without aid.',
-  //     options: ['Great Wall of China', 'Machu Picchu', 'Colosseum', 'Taj Mahal']
-  //   },
-  //   {
-  //     name: 'Statue of Liberty',
-  //     clue: 'A symbol of freedom gifted by France to the USA.',
-  //     funFact: 'The statue's full name is "Liberty Enlightening the World".',
-  //     options: ['Statue of Liberty', 'Christ the Redeemer', 'Eiffel Tower', 'Mount Rushmore']
-  //   }
-  // ];
+    //   {
+      //     name: 'Eiffel Tower',
+      //     clue: 'This famous landmark is known as the "Iron Lady" of France.',
+      //     funFact: 'The Eiffel Tower can be 15 cm taller in the summer due to heat expansion!',
+      //     options: ['Eiffel Tower', 'Statue of Liberty', 'Big Ben', 'Sydney Opera House']
+      //   },
+      //   {
+        //     name: 'Great Wall of China',
+        //     clue: 'This structure is visible from space and stretches over 13,000 miles!',
+        //     funFact: 'Contrary to popular belief, it is not fully visible from space without aid.',
+        //     options: ['Great Wall of China', 'Machu Picchu', 'Colosseum', 'Taj Mahal']
+        //   },
+        //   {
+          //     name: 'Statue of Liberty',
+          //     clue: 'A symbol of freedom gifted by France to the USA.',
+          //     funFact: 'The statue's full name is "Liberty Enlightening the World".',
+          //     options: ['Statue of Liberty', 'Christ the Redeemer', 'Eiffel Tower', 'Mount Rushmore']
+          //   }
+          // ];
+          
+          
+          
+          const [currentDestination, setCurrentDestination] = useState(null);
+          const [options, setOptions] = useState([]);
+          const [score, setScore] = useState(location.state?.score || 0);
 
-
-
-  const [currentDestination, setCurrentDestination] = useState(null);
-  const [options, setOptions] = useState([]);
-  const [score, setScore] = useState(0);
-  const [attempts, setAttempts] = useState(0);
+          const [attempts, setAttempts] = useState(location.state?.attempts || 0);
   const [showConfetti, setShowConfetti] = useState(false);
   const [feedback, setFeedback] = useState(null);
 
@@ -51,7 +53,15 @@ const Game = () => {
   useEffect(() => {
     if (!username) {
       navigate('/');
+      return;
     }
+
+    // Preserve score and attempts when returning from leaderboard
+    if (location.state?.from === 'leaderboard') {
+      setScore(location.state.score);
+      setAttempts(location.state.attempts);
+    }
+
     fetchNewDestination();
   }, [username, navigate]);
 
@@ -83,34 +93,41 @@ const Game = () => {
 
 
   const handleAnswer = async (destinationId, selectedOption) => {
-
-    setAttempts(prev => prev+1);
-
-
+    // Increment attempts before making API call
+    setAttempts(prev => prev + 1);
+  
+    try {
       const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/v1/game/answer`, {destinationId, selectedOption});
       const isCorrect = response.data.isCorrect;
 
+      const savedScore = await axios.post(`${import.meta.env.VITE_API_URL}/api/v1/user/save-score`, {username, score, attempts});
+        
+      if (isCorrect) {
+        //true
+        // Saving score only if the answer is correct
+        
+          setScore(prevScore => prevScore + 2);
+          setShowConfetti(true);
+          setTimeout(() => setShowConfetti(false), 5000);
+          setFeedback({
+            type: 'success',
+            message: '🎉 Correct! ' + currentDestination.funFact
+          });
+          setIsCorrectAnswered(true);
+        }else {
+        //false 
+        setScore(prevScore => prevScore - 1);
 
-    // const isCorrect = selectedOption === currentDestination.name;
-    setAttempts(prev => prev + 1);
-    
-    if (isCorrect) {
-      setScore(prev => prev + 2);
-      setShowConfetti(true);
-      setTimeout(() => setShowConfetti(false), 5000);
-      setFeedback({
-        type: 'success',
-        message: '🎉 Correct! ' + currentDestination.funFact
-      });
-      setIsCorrectAnswered(true);
-    } else {
-      setScore(prev =>prev-1);
+      }
+    } catch (error) {
+      console.error("Error handling answer", error);
       setFeedback({
         type: 'error',
-        message: '😢 Not quite! ' + currentDestination.funFact
+        message: '⚠️ Something went wrong. Please try again later.'
       });
     }
   };
+  
 
   const handleShare = async (username, score, attempts) => {
     try {
@@ -118,7 +135,7 @@ const Game = () => {
       // const checkResponse = await axios.get(`${import.meta.env.VITE_API_URL}/api/v1/user/check/${username}`);
       
       // Step 2: Register the user if not already registered
-      const registeredUser = await axios.post(`${import.meta.env.VITE_API_URL}/api/v1/user/register`, { username, score, attempts });
+      // const registeredUser = await axios.post(`${import.meta.env.VITE_API_URL}/api/v1/user/register`, { username, score, attempts });
       
         
           // Step 3: Generate the shareable link
@@ -147,7 +164,10 @@ const Game = () => {
     navigate('/leaderboard', { 
       state: { 
         from: 'game',
-        // You can also pass any game state you want to preserve
+        username: username,
+        score: score,
+        attempts: attempts,
+        returnPath: '/game'  // Add return path for clarity
       } 
     });
   };
@@ -194,8 +214,8 @@ const Game = () => {
                 key={option}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="btn btn-secondary  "
-                onClick={() => handleAnswer(currentDestination._id,  option)}
+                className={`btn btn-secondary `}
+                onClick={() => handleAnswer(currentDestination._id, option)}
                 disabled={isCorrectAnswered}
               >
                 {option}
