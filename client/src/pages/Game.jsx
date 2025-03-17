@@ -9,28 +9,6 @@ const Game = () => {
   const navigate = useNavigate();
   const username = location.state?.username;
   
-  
-  // const dummyDestinations = [
-    //   {
-      //     name: 'Eiffel Tower',
-      //     clue: 'This famous landmark is known as the "Iron Lady" of France.',
-      //     funFact: 'The Eiffel Tower can be 15 cm taller in the summer due to heat expansion!',
-      //     options: ['Eiffel Tower', 'Statue of Liberty', 'Big Ben', 'Sydney Opera House']
-      //   },
-      //   {
-        //     name: 'Great Wall of China',
-        //     clue: 'This structure is visible from space and stretches over 13,000 miles!',
-        //     funFact: 'Contrary to popular belief, it is not fully visible from space without aid.',
-        //     options: ['Great Wall of China', 'Machu Picchu', 'Colosseum', 'Taj Mahal']
-        //   },
-        //   {
-          //     name: 'Statue of Liberty',
-          //     clue: 'A symbol of freedom gifted by France to the USA.',
-          //     funFact: 'The statue's full name is "Liberty Enlightening the World".',
-          //     options: ['Statue of Liberty', 'Christ the Redeemer', 'Eiffel Tower', 'Mount Rushmore']
-          //   }
-          // ];
-          
           
           
           const [currentDestination, setCurrentDestination] = useState(null);
@@ -38,15 +16,15 @@ const Game = () => {
           const [score, setScore] = useState(location.state?.score || 0);
 
           const [attempts, setAttempts] = useState(location.state?.attempts || 0);
-  const [showConfetti, setShowConfetti] = useState(false);
-  const [feedback, setFeedback] = useState(null);
+          const [showConfetti, setShowConfetti] = useState(false);
+          const [feedback, setFeedback] = useState(null);
 
-  const [isLoading, setIsLoading] = useState(true);
-  const [isCorrectAnswered, setIsCorrectAnswered] = useState(false); // Track correct answer
-  const [showClue, setShowClue] = useState(false);
+          const [isLoading, setIsLoading] = useState(true);
+          const [isCorrectAnswered, setIsCorrectAnswered] = useState(false); // Track correct answer
+          const [showClue, setShowClue] = useState(false);
 
 
-  const [currentClue, setCurrentClue] = useState('');
+          const [currentClue, setCurrentClue] = useState('');
 
 
   
@@ -100,25 +78,31 @@ const Game = () => {
       const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/v1/game/answer`, {destinationId, selectedOption});
       const isCorrect = response.data.isCorrect;
 
-      const savedScore = await axios.post(`${import.meta.env.VITE_API_URL}/api/v1/user/save-score`, {username, score, attempts});
-        
+      const newAttempts = attempts+1;
+      let newScore = score;
+
+      
       if (isCorrect) {
         //true
         // Saving score only if the answer is correct
+        newScore +=2;
         
-          setScore(prevScore => prevScore + 2);
-          setShowConfetti(true);
-          setTimeout(() => setShowConfetti(false), 5000);
-          setFeedback({
+        setScore(newScore);
+        setShowConfetti(true);
+        setTimeout(() => setShowConfetti(false), 5000);
+        setFeedback({
             type: 'success',
             message: '🎉 Correct! ' + currentDestination.funFact
           });
           setIsCorrectAnswered(true);
         }else {
-        //false 
-        setScore(prevScore => prevScore - 1);
+          //false 
+          newScore-=1;
+          setScore(newScore);
+          
+        }
 
-      }
+        const savedScore = await axios.post(`${import.meta.env.VITE_API_URL}/api/v1/user/save-score`, {username, score:newScore, attempts:newAttempts});
     } catch (error) {
       console.error("Error handling answer", error);
       setFeedback({

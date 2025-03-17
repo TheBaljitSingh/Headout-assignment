@@ -5,6 +5,7 @@ import axios from 'axios';
 
 const Leaderboard = () => {
   const location = useLocation();
+  console.log(location);
   const navigate = useNavigate();
   const [leaderboardData, setLeaderboardData] = useState([]);
   const [loading, setLoading] = useState(true);
